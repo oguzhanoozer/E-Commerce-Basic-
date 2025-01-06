@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LoginPage: View {
     @StateObject var loginData: LoginPageModel = LoginPageModel()
+    
+    
     var body: some View {
         
         VStack{
@@ -22,116 +24,12 @@ struct LoginPage: View {
                 .padding()
                 .background(
                 
-                    ZStack{
-                        
-                        // Gradient Circle...
-                        LinearGradient(colors: [
-                        
-                            AppColor.loginCircle,
-                            AppColor.loginCircle
-                                .opacity(0.8),
-                            AppColor.purple
-                        ], startPoint: .top, endPoint: .bottom)
-                            .frame(width: 100, height: 100)
-                            .clipShape(Circle())
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                            .padding(.trailing)
-                            .offset(y: -25)
-                            .ignoresSafeArea()
-                        
-                        Circle()
-                            .strokeBorder(Color.white.opacity(0.3),lineWidth: 3)
-                            .frame(width: 30, height: 30)
-                            .blur(radius: 2)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                            .padding(30)
-                        
-                        Circle()
-                            .strokeBorder(Color.white.opacity(0.3),lineWidth: 3)
-                            .frame(width: 23, height: 23)
-                            .blur(radius: 2)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                            .padding(.leading,30)
-                    }
+                    Background()
                 )
             
             ScrollView(.vertical, showsIndicators: false) {
                 
-                // Login Page Form....
-                VStack(spacing: 15){
-                    
-                    Text(loginData.registerUser ? AppTitleConstants.register : AppTitleConstants.login)
-                        .font(.custom(customFont, size: 22).bold())
-                        .frame(maxWidth: .infinity,alignment: .leading)
-                    
-                    // Custom Text Field...
-                    
-                    CustomTextField(icon: "envelope", title: AppTitleConstants.email, hint: AppTitleConstants.emailHint, value: $loginData.email, showPassword: .constant(false))
-                        .padding(.top,30)
-                    
-                    CustomTextField(icon: "lock", title: AppTitleConstants.password, hint: AppTitleConstants.passwordHint, value: $loginData.password, showPassword: $loginData.showPassword)
-                        .padding(.top,10)
-                    
-                    // Regsiter Reenter Password
-                    if loginData.registerUser{
-                        CustomTextField(icon: "envelope", title: AppTitleConstants.reEnterPassword, hint: AppTitleConstants.passwordHint, value: $loginData.re_Enter_Password, showPassword: $loginData.showReEnterPassword)
-                            .padding(.top,10)
-                    }
-                    
-                    // Forgot Password Button...
-                    Button {
-                        loginData.ForgotPassword()
-                    } label: {
-                        
-                        Text(AppTitleConstants.forgotPassword)
-                            .font(.custom(customFont, size: 14))
-                            .fontWeight(.semibold)
-                            .foregroundColor(AppColor.purple)
-                    }
-                    .padding(.top,8)
-                    .frame(maxWidth: .infinity,alignment: .leading)
-
-                    // Login Button...
-                    Button {
-                        if loginData.registerUser{
-                            loginData.Register()
-                        }
-                        else{
-                            loginData.Login()
-                        }
-                    } label: {
-                        
-                        Text( AppTitleConstants.login)
-                            .font(.custom(customFont, size: 17).bold())
-                            .padding(.vertical,20)
-                            .frame(maxWidth: .infinity)
-                            .foregroundColor(.white)
-                            .background(AppColor.purple)
-                            .cornerRadius(15)
-                            .shadow(color: Color.black.opacity(0.07), radius: 5, x: 5, y: 5)
-                    }
-                    .padding(.top,25)
-                    .padding(.horizontal)
-                    
-                    // Register User Button...
-                    
-                    Button {
-                        withAnimation{
-                            loginData.registerUser.toggle()
-                        }
-                    } label: {
-                        
-                        VStack {
-                            Text(loginData.registerUser ? AppTitleConstants.backToLogin:  AppTitleConstants.createAccount)
-                                .font(.custom(customFont, size: 14))
-                                .fontWeight(.semibold)
-                                .foregroundColor(AppColor.purple)
-                        
-                        }
-                    }
-                    .padding(.top,8)
-                }
-                .padding(30)
+                LoginPageView()
             }
             .frame(maxWidth: .infinity,maxHeight: .infinity)
             .background(
@@ -201,6 +99,137 @@ struct LoginPage: View {
             ,alignment: .trailing
         )
     }
+    
+    @ViewBuilder
+    fileprivate func LoginButton() -> some View {
+         Button {
+            if loginData.registerUser{
+                loginData.Register()
+            }
+            else{
+                loginData.Login()
+            }
+        } label: {
+            
+            Text( AppTitleConstants.login)
+                .font(.custom(customFont, size: 17).bold())
+                .padding(.vertical,20)
+                .frame(maxWidth: .infinity)
+                .foregroundColor(.white)
+                .background(AppColor.purple)
+                .cornerRadius(15)
+                .shadow(color: Color.black.opacity(0.07), radius: 5, x: 5, y: 5)
+        }
+        .padding(.top,25)
+        .padding(.horizontal)
+    }
+    
+    @ViewBuilder
+    fileprivate func RegisterButton() -> some View {
+         Button {
+            withAnimation{
+                loginData.registerUser.toggle()
+            }
+        } label: {
+            
+            VStack {
+                Text(loginData.registerUser ? AppTitleConstants.backToLogin:  AppTitleConstants.createAccount)
+                    .font(.custom(customFont, size: 14))
+                    .fontWeight(.semibold)
+                    .foregroundColor(AppColor.purple)
+                
+            }
+        }
+        .padding(.top,8)
+    }
+    
+    @ViewBuilder
+    fileprivate func ForgotPasswordButton() -> some View {
+         Button {
+            loginData.ForgotPassword()
+        } label: {
+            
+            Text(AppTitleConstants.forgotPassword)
+                .font(.custom(customFont, size: 14))
+                .fontWeight(.semibold)
+                .foregroundColor(AppColor.purple)
+        }
+        .padding(.top,8)
+        .frame(maxWidth: .infinity,alignment: .leading)
+    }
+    
+    @ViewBuilder
+    fileprivate func Background() -> some View {
+         ZStack{
+            
+            // Gradient Circle...
+            LinearGradient(colors: [
+                
+                AppColor.loginCircle,
+                AppColor.loginCircle
+                    .opacity(0.8),
+                AppColor.purple
+            ], startPoint: .top, endPoint: .bottom)
+            .frame(width: 100, height: 100)
+            .clipShape(Circle())
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            .padding(.trailing)
+            .offset(y: -25)
+            .ignoresSafeArea()
+            
+            Circle()
+                .strokeBorder(Color.white.opacity(0.3),lineWidth: 3)
+                .frame(width: 30, height: 30)
+                .blur(radius: 2)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .padding(30)
+            
+            Circle()
+                .strokeBorder(Color.white.opacity(0.3),lineWidth: 3)
+                .frame(width: 23, height: 23)
+                .blur(radius: 2)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .padding(.leading,30)
+        }
+    }
+    
+    @ViewBuilder
+    fileprivate func LoginPageView() -> some View {
+         // Login Page Form....
+        VStack(spacing: 15){
+            
+            Text(loginData.registerUser ? AppTitleConstants.register : AppTitleConstants.login)
+                .font(.custom(customFont, size: 22).bold())
+                .frame(maxWidth: .infinity,alignment: .leading)
+            
+            // Custom Text Field...
+            
+            CustomTextField(icon: "envelope", title: AppTitleConstants.email, hint: AppTitleConstants.emailHint, value: $loginData.email, showPassword: .constant(false))
+                .padding(.top,30)
+            
+            CustomTextField(icon: "lock", title: AppTitleConstants.password, hint: AppTitleConstants.passwordHint, value: $loginData.password, showPassword: $loginData.showPassword)
+                .padding(.top,10)
+            
+            // Regsiter Reenter Password
+            if loginData.registerUser{
+                CustomTextField(icon: "envelope", title: AppTitleConstants.reEnterPassword, hint: AppTitleConstants.passwordHint, value: $loginData.re_Enter_Password, showPassword: $loginData.showReEnterPassword)
+                    .padding(.top,10)
+            }
+            
+            // Forgot Password Button...
+            ForgotPasswordButton()
+            
+            
+            // Login Button...
+            LoginButton()
+            
+            
+            // Register User Button...
+            RegisterButton()
+        }
+        .padding(30)
+    }
+    
 }
 
 struct LoginPage_Previews: PreviewProvider {

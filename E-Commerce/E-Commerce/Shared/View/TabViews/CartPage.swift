@@ -172,6 +172,7 @@ struct CardView: View{
     // Making Product as Binding so as to update in Real time...
     @Binding var product: Product
     
+    
     var body: some View{
         
         HStack(spacing: 15){
@@ -192,40 +193,7 @@ struct CardView: View{
                     .fontWeight(.semibold)
                     .foregroundColor(AppColor.purple)
                 
-                // Quantity Buttons...
-                HStack(spacing: 10){
-                    
-                    Text(AppTitleConstants.quantityTitle)
-                        .font(.custom(customFont, size: 14))
-                        .foregroundColor(.gray)
-                    
-                    Button {
-                        product.quantity = (product.quantity > 0 ? (product.quantity - 1) : 0)
-                    } label: {
-                        Image(systemName: "minus")
-                            .font(.caption)
-                            .foregroundColor(.white)
-                            .frame(width: 20, height: 20)
-                            .background(AppColor.quantity)
-                            .cornerRadius(4)
-                    }
-
-                    Text("\(product.quantity)")
-                        .font(.custom(customFont, size: 14))
-                        .fontWeight(.semibold)
-                        .foregroundColor(.black)
-                    
-                    Button {
-                        product.quantity += 1
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.caption)
-                            .foregroundColor(.white)
-                            .frame(width: 20, height: 20)
-                            .background(AppColor.quantity)
-                            .cornerRadius(4)
-                    }
-                }
+                QuantityButtons()
             }
         }
         .padding(.horizontal,10)
@@ -236,5 +204,43 @@ struct CardView: View{
             Color.white
                 .cornerRadius(10)
         )
+    }
+    
+    @ViewBuilder
+    fileprivate func QuantityButtons() -> some View {
+         // Quantity Buttons...
+        HStack(spacing: 10){
+            
+            Text(AppTitleConstants.quantityTitle)
+                .font(.custom(customFont, size: 14))
+                .foregroundColor(.gray)
+            
+            Button {
+                product.quantity = (product.quantity > 0 ? (product.quantity - 1) : 0)
+            } label: {
+                Image(systemName: "minus")
+                    .font(.caption)
+                    .foregroundColor(.white)
+                    .frame(width: 20, height: 20)
+                    .background(AppColor.quantity)
+                    .cornerRadius(4)
+            }
+            
+            Text("\(product.quantity)")
+                .font(.custom(customFont, size: 14))
+                .fontWeight(.semibold)
+                .foregroundColor(.black)
+            
+            Button {
+                product.quantity += 1
+            } label: {
+                Image(systemName: "plus")
+                    .font(.caption)
+                    .foregroundColor(.white)
+                    .frame(width: 20, height: 20)
+                    .background(AppColor.quantity)
+                    .cornerRadius(4)
+            }
+        }
     }
 }

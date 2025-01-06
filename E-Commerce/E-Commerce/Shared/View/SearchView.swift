@@ -18,6 +18,9 @@ struct SearchView: View {
     // Activating Text Field with the help of FocusState...
     @FocusState var startTF: Bool
     
+    
+   
+    
     var body: some View {
         
         VStack(spacing: 0){
@@ -70,48 +73,12 @@ struct SearchView: View {
             if let products = homeData.searchedProducts{
                 
                 if products.isEmpty{
-                    
                     // No Results Found....
-                    VStack(spacing: 10){
-                        
-                        Image(ImageItems.App.notFound.rawValue)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding(.top,60)
-                        
-                        Text(AppTitleConstants.itemNotFound)
-                            .font(.custom(customFont,size: 22).bold())
-                        
-                        Text(AppTitleConstants.tryMoreGeneric)
-                            .font(.custom(customFont,size: 16))
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal,30)
-                    }
-                    .padding()
+                    NoResultView()
                 }
                 else{
                     // Filter Results....
-                    ScrollView(.vertical, showsIndicators: false) {
-                        
-                        VStack(spacing: 0){
-                            
-                            // Found Text...
-                            Text("Found \(products.count) results")
-                                .font(.custom(customFont, size: 24).bold())
-                                .padding(.vertical)
-                            
-                            // Staggered Grid...
-                            // See my Staggered Video..
-                            // Link in Bio...
-                            StaggeredGrid(columns: 2,spacing: 20, list: products) {product in
-                                
-                                // Card View....
-                                ProductCardView(product: product)
-                            }
-                        }
-                        .padding()
-                    }
+                    filterResults(products)
                 }
             }
             else{
@@ -133,7 +100,54 @@ struct SearchView: View {
             }
         }
     }
-    
+
+
+    @ViewBuilder
+    fileprivate func NoResultView() -> some View {
+         
+        VStack(spacing: 10){
+            
+            Image(ImageItems.App.notFound.rawValue)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(.top,60)
+            
+            Text(AppTitleConstants.itemNotFound)
+                .font(.custom(customFont,size: 22).bold())
+            
+            Text(AppTitleConstants.tryMoreGeneric)
+                .font(.custom(customFont,size: 16))
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal,30)
+        }
+        .padding()
+    }
+
+
+    @ViewBuilder
+    fileprivate func filterResults(_ products: [Product]) -> ScrollView<some View> {
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0){
+                
+                // Found Text...
+                Text("Found \(products.count) results")
+                    .font(.custom(customFont, size: 24).bold())
+                    .padding(.vertical)
+                
+                // Staggered Grid...
+                // See my Staggered Video..
+                // Link in Bio...
+                StaggeredGrid(columns: 2,spacing: 20, list: products) {product in
+                    
+                    // Card View....
+                    ProductCardView(product: product)
+                }
+            }
+            .padding()
+        }
+    }
+        
     @ViewBuilder
     func ProductCardView(product: Product)->some View{
         

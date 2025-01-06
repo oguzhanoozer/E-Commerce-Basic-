@@ -13,6 +13,8 @@ struct LikedPage: View {
     // Delete Option...
     @State var showDeleteOption: Bool = false
     
+   
+    
     var body: some View {
         
         NavigationView{
@@ -45,54 +47,11 @@ struct LikedPage: View {
                     // checking if liked products are empty...
                     if sharedData.likedProducts.isEmpty{
                         
-                        Group{
-                            Image(AppTitleConstants.noLiked)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding()
-                                .padding(.top,35)
-                            
-                            Text(AppTitleConstants.noFavorites)
-                                .font(.custom(customFont, size: 25))
-                                .fontWeight(.semibold)
-                            
-                            Text(AppTitleConstants.hitTHeLikeButtonSaveFavorite)
-                                .font(.custom(customFont, size: 18))
-                                .foregroundColor(.gray)
-                                .padding(.horizontal)
-                                .padding(.top,10)
-                                .multilineTextAlignment(.center)
-                        }
+                        NoLikedProducts()
                     }
                     else{
                      
-                        // Displaying Products...
-                        VStack(spacing: 15){
-                            
-                            // For Designing...
-                            ForEach(sharedData.likedProducts){product in
-                                
-                                HStack(spacing: 0){
-                                    
-                                    if showDeleteOption{
-                                        
-                                        Button {
-                                            deleteProduct(product: product)
-                                        } label: {
-                                            Image(systemName: "minus.circle.fill")
-                                                .font(.title2)
-                                                .foregroundColor(.red)
-                                        }
-                                        .padding(.trailing)
-
-                                    }
-                                    
-                                    CardView(product: product)
-                                }
-                            }
-                        }
-                        .padding(.top,25)
-                        .padding(.horizontal)
+                        DisplayingProducts()
                     }
                 }
                 .padding()
@@ -104,6 +63,59 @@ struct LikedPage: View {
                 AppColor.homeBG
                     .ignoresSafeArea()
             )
+        }
+    }
+    
+    @ViewBuilder
+    fileprivate func DisplayingProducts() -> some View {
+         // Displaying Products...
+        VStack(spacing: 15){
+            
+            // For Designing...
+            ForEach(sharedData.likedProducts){product in
+                
+                HStack(spacing: 0){
+                    
+                    if showDeleteOption{
+                        
+                        Button {
+                            deleteProduct(product: product)
+                        } label: {
+                            Image(systemName: "minus.circle.fill")
+                                .font(.title2)
+                                .foregroundColor(.red)
+                        }
+                        .padding(.trailing)
+                        
+                    }
+                    
+                    CardView(product: product)
+                }
+            }
+        }
+        .padding(.top,25)
+        .padding(.horizontal)
+    }
+    
+    @ViewBuilder
+    fileprivate func NoLikedProducts() -> some View {
+         Group{
+            Image(AppTitleConstants.noLiked)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding()
+                .padding(.top,35)
+            
+            Text(AppTitleConstants.noFavorites)
+                .font(.custom(customFont, size: 25))
+                .fontWeight(.semibold)
+            
+            Text(AppTitleConstants.hitTHeLikeButtonSaveFavorite)
+                .font(.custom(customFont, size: 18))
+                .foregroundColor(.gray)
+                .padding(.horizontal)
+                .padding(.top,10)
+                .multilineTextAlignment(.center)
         }
     }
     

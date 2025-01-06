@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProfilePage: View {
+    
     var body: some View {
         
         NavigationView{
@@ -20,39 +21,7 @@ struct ProfilePage: View {
                         .font(.custom(customFont, size: 28).bold())
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    VStack(spacing: 15){
-                        
-                        Image(ImageItems.App.profileImage.rawValue)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 60, height: 60)
-                            .clipShape(Circle())
-                            .offset(y: -30)
-                            .padding(.bottom,-30)
-                        
-                        Text("Rosina Doe")
-                            .font(.custom(customFont, size: 16))
-                            .fontWeight(.semibold)
-                        
-                        HStack(alignment: .top, spacing: 10) {
-                            
-                            Image(systemName: "location.north.circle.fill")
-                                .foregroundColor(.gray)
-                                .rotationEffect(.init(degrees: 180))
-                            
-                            Text("Address: 43 Oxford Road\nM13 4GR\nManchester, UK")
-                                .font(.custom(customFont, size: 15))
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .padding([.horizontal,.bottom])
-                    .background(
-                    
-                        Color.white
-                            .cornerRadius(12)
-                    )
-                    .padding()
-                    .padding(.top,40)
+                    UserInfo()
                     
                     // Custom Navigation Links...
                     
@@ -108,6 +77,42 @@ struct ProfilePage: View {
                     .ignoresSafeArea()
             )
         }
+    }
+    
+    @ViewBuilder
+    fileprivate func UserInfo() -> some View {
+         VStack(spacing: 15){
+            
+            Image(ImageItems.App.profileImage.rawValue)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 60, height: 60)
+                .clipShape(Circle())
+                .offset(y: -30)
+                .padding(.bottom,-30)
+            
+            Text("Rosina Doe")
+                .font(.custom(customFont, size: 16))
+                .fontWeight(.semibold)
+            
+            HStack(alignment: .top, spacing: 10) {
+                
+                Image(systemName: "location.north.circle.fill")
+                    .foregroundColor(.gray)
+                    .rotationEffect(.init(degrees: 180))
+                
+                Text("Address: 43 Oxford Road\nM13 4GR\nManchester, UK")
+                    .font(.custom(customFont, size: 15))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding([.horizontal,.bottom])
+        .background(
+            Color.white
+                .cornerRadius(12)
+        )
+        .padding()
+        .padding(.top,40)
     }
     
     // Avoiding new Structs...

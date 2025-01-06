@@ -10,11 +10,13 @@ import SwiftUI
 struct Home: View {
     var animation: Namespace.ID
     
-    
     // Shared Data...
     @EnvironmentObject var sharedData: SharedDataModel
     
     @StateObject var homeData: HomeViewModel = HomeViewModel()
+    
+   
+    
     var body: some View {
         
         ScrollView(.vertical, showsIndicators: false) {
@@ -22,25 +24,8 @@ struct Home: View {
             VStack(spacing: 15){
                 
                 // Search Bar...
-                
-                ZStack{
-                    
-                    if homeData.searchActivated{
-                        SearchBar()
-                    }
-                    else{
-                        SearchBar()
-                            .matchedGeometryEffect(id: "SEARCHBAR", in: animation)
-                    }
-                }
-                .frame(width: getRect().width / 1.6)
-                .padding(.horizontal,25)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    withAnimation(.easeInOut){
-                        homeData.searchActivated = true
-                    }
-                }
+
+                SearchBarView()
                 
                 Text(AppTitleConstants.orderOnline)
                     .font(.custom(customFont, size: 28).bold())
@@ -49,58 +34,12 @@ struct Home: View {
                     .padding(.horizontal,25)
                 
                 // Products Tab....
+
+                ProductsTab()
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    
-                    HStack(spacing: 18){
-                        
-                        ForEach(ProductType.allCases,id: \.self){type in
-                            
-                            // Product Type View...
-                            ProductTypeView(type: type)
-                        }
-                    }
-                    .padding(.horizontal,25)
-                }
-                .padding(.top,28)
+                ProductsTabView()
                 
-                // Products Page...
-                ScrollView(.horizontal, showsIndicators: false) {
-                    
-                    HStack(spacing: 25){
-                        
-                        ForEach(homeData.filteredProducts){product in
-                            
-                            // Product Card View...
-                            ProductCardView(product: product)
-                        }
-                    }
-                    .padding(.horizontal,25)
-                    .padding(.bottom)
-                    .padding(.top,80)
-                }
-                .padding(.top,30)
-                
-                // See More Button...
-                // This button will show all products on the current product type..
-                // since here were showing only 4...
-                
-                Button {
-                    homeData.showMoreProductsOnType.toggle()
-                } label: {
-                    
-                    // Since we need image ar right...
-                    Label {
-                        Image(systemName: "arrow.right")
-                    } icon: {
-                        Text(AppTitleConstants.seeMore)
-                    }
-                    .font(.custom(customFont, size: 15).bold())
-                    .foregroundColor(AppColor.purple)
-                }
-                .frame(maxWidth: .infinity,alignment: .trailing)
-                .padding(.trailing)
-                .padding(.top,10)
+                SeeMoreView()
 
             }
             .padding(.vertical)
@@ -128,6 +67,91 @@ struct Home: View {
                 }
             }
         )
+    }
+    
+    @ViewBuilder
+    fileprivate func SearchBarView() -> some View {
+        
+        ZStack{
+            
+            if homeData.searchActivated{
+                SearchBar()
+            }
+            else{
+                SearchBar()
+                    .matchedGeometryEffect(id: "SEARCHBAR", in: animation)
+            }
+        }
+        .frame(width: getRect().width / 1.6)
+        .padding(.horizontal,25)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            withAnimation(.easeInOut){
+                homeData.searchActivated = true
+            }
+        }
+    }
+    
+    @ViewBuilder
+    fileprivate func ProductsTab() -> some View {
+        
+        ScrollView(.horizontal, showsIndicators: false) {
+            
+            HStack(spacing: 18){
+                
+                ForEach(ProductType.allCases,id: \.self){type in
+                    
+                    // Product Type View...
+                    ProductTypeView(type: type)
+                }
+            }
+            .padding(.horizontal,25)
+        }
+        .padding(.top,28)
+    }
+    
+    @ViewBuilder
+    fileprivate func ProductsTabView() -> some View {
+         // Products Page...
+        ScrollView(.horizontal, showsIndicators: false) {
+            
+            HStack(spacing: 25){
+                
+                ForEach(homeData.filteredProducts){product in
+                    
+                    // Product Card View...
+                    ProductCardView(product: product)
+                }
+            }
+            .padding(.horizontal,25)
+            .padding(.bottom)
+            .padding(.top,80)
+        }
+        .padding(.top,30)
+    }
+    
+    @ViewBuilder
+    fileprivate func SeeMoreView() -> some View {
+         // See More Button...
+        // This button will show all products on the current product type..
+        // since here were showing only 4...
+        
+        Button {
+            homeData.showMoreProductsOnType.toggle()
+        } label: {
+            
+            // Since we need image ar right...
+            Label {
+                Image(systemName: "arrow.right")
+            } icon: {
+                Text(AppTitleConstants.seeMore)
+            }
+            .font(.custom(customFont, size: 15).bold())
+            .foregroundColor(AppColor.purple)
+        }
+        .frame(maxWidth: .infinity,alignment: .trailing)
+        .padding(.trailing)
+        .padding(.top,10)
     }
     
     // Since we're adding matched geometry effect...

@@ -20,6 +20,8 @@ struct MainPage: View {
     init(){
         UITabBar.appearance().isHidden = true
     }
+  
+    
     var body: some View {
         
         VStack(spacing: 0){
@@ -44,39 +46,7 @@ struct MainPage: View {
             }
             
             // Custom Tab Bar...
-            HStack(spacing: 0){
-                ForEach(Tab.allCases,id: \.self){tab in
-                    
-                    Button {
-                        // updating tab...
-                        currentTab = tab
-                    } label: {
-                     
-                        Image(tab.rawValue)
-                            .resizable()
-                            .renderingMode(.template)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 22, height: 22)
-                        // Applying little shadow at bg...
-                            .background(
-                            
-                                AppColor.purple
-                                    .opacity(0.1)
-                                    .cornerRadius(5)
-                                // blurring...
-                                    .blur(radius: 5)
-                                // Making little big...
-                                    .padding(-7)
-                                    .opacity(currentTab == tab ? 1 : 0)
-                                
-                            )
-                            .frame(maxWidth: .infinity)
-                            .foregroundColor(currentTab == tab ? AppColor.purple : Color.black.opacity(0.3))
-                    }
-                }
-            }
-            .padding([.horizontal,.top])
-            .padding(.bottom,10)
+            CustomTabBar()
         }
         .background(AppColor.homeBG.ignoresSafeArea())
         .overlay(
@@ -92,6 +62,45 @@ struct MainPage: View {
                 }
             }
         )
+    }
+    
+    
+    @ViewBuilder
+    fileprivate func CustomTabBar() -> some View {
+        
+        HStack(spacing: 0){
+            ForEach(Tab.allCases,id: \.self){tab in
+                
+                Button {
+                    // updating tab...
+                    currentTab = tab
+                } label: {
+                    
+                    Image(tab.rawValue)
+                        .resizable()
+                        .renderingMode(.template)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 22, height: 22)
+                    // Applying little shadow at bg...
+                        .background(
+                            
+                            AppColor.purple
+                                .opacity(0.1)
+                                .cornerRadius(5)
+                            // blurring...
+                                .blur(radius: 5)
+                            // Making little big...
+                                .padding(-7)
+                                .opacity(currentTab == tab ? 1 : 0)
+                            
+                        )
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(currentTab == tab ? AppColor.purple : Color.black.opacity(0.3))
+                }
+            }
+        }
+        .padding([.horizontal,.top])
+        .padding(.bottom,10)
     }
 }
 
