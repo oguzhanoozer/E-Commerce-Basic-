@@ -68,7 +68,7 @@ class AppTitleConstants{
     /// MARK: Search View
     ///
     static let added = "Added"
-    static let add = "Ad"
+    static let add = "Add"
     static let toBasket = "to basket"
     
     /// MARK: Login View

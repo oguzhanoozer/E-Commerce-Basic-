@@ -35,7 +35,7 @@ struct OnBoardingPage: View {
             } label: {
              
                 Text(AppTitleConstants.getStarted)
-                    .font(.custom(customFont, size: 18))
+                    .font(.custom(customFont, size: 24))
                     .fontWeight(.semibold)
                     .padding(.vertical,18)
                     .frame(maxWidth: .infinity)
