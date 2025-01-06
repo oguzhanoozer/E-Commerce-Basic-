@@ -1,4 +1,7 @@
 # E-Commerce
+
+# 📁 Project Structure
+ 
  ```
 E-Commerce/
 ├── 📱 E-Commerce/
